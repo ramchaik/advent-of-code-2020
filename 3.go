@@ -25,16 +25,15 @@ func readInput(path string) ([][]string, error) {
   return lines, scanner.Err()
 }
 
-func partOneSolution(sample [][]string) (int) {
+func getTotalTreesTraversedBySlope(sample [][]string, step int, down int) (int) {
   var treeCount int = 0
   startIdx := 0
-  step := 3
 
-  for i := 0; i < len(sample) - 1; i++ {
+  for i := 0; i < len(sample) - down; i += down {
     row := sample[i]
     startIdx = int(math.Mod(float64(startIdx + step), float64(len(row))));
 
-    if sample[i + 1][startIdx] == "#" {
+    if sample[i + down][startIdx] == "#" {
       treeCount++
     }
   }
@@ -46,6 +45,19 @@ func main() {
     if e != nil {
       fmt.Println("Reading input", e)
     }
-    treeCount := partOneSolution(sample)
-    fmt.Printf("tree count: %d\n", treeCount)
+
+    totalCountSlope1 := getTotalTreesTraversedBySlope(sample, 1, 1)
+    totalCountSlope3 := getTotalTreesTraversedBySlope(sample, 3, 1)
+    totalCountSlope5 := getTotalTreesTraversedBySlope(sample, 5, 1)
+    totalCountSlope7 := getTotalTreesTraversedBySlope(sample, 7, 1)
+    totalCountSlopeHalf := getTotalTreesTraversedBySlope(sample, 1, 2)
+
+    fmt.Printf("slope 3: %d\n", totalCountSlope3)
+    fmt.Printf("slope 1: %d\n", totalCountSlope1)
+    fmt.Printf("slope 5: %d\n", totalCountSlope5)
+    fmt.Printf("slope 7: %d\n", totalCountSlope7)
+    fmt.Printf("slope half: %d\n", totalCountSlopeHalf)
+
+    fmt.Printf("part 1 solution: %d\n", totalCountSlope3)
+    fmt.Printf("part 2 solution: %d\n", (totalCountSlope1 * totalCountSlope3 * totalCountSlope5 * totalCountSlope7 * totalCountSlopeHalf))
 }
