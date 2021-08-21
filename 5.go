@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -65,6 +66,18 @@ func getMaxSeatId(seatIds []int) int {
 	return maxSeatId
 }
 
+func getMySeatId(seatIds []int) int {
+	sort.Ints(seatIds)
+	var mySeatId int
+	for i, s := range seatIds {
+
+		if (i + 1) < (len(seatIds) - 1) && s + 1 != seatIds[i + 1] {
+			mySeatId = s + 1
+		}
+	}
+	return mySeatId
+}
+
 func main() {
 	sample, e  := readInput("input.txt")
 	if e != nil {
@@ -81,5 +94,8 @@ func main() {
 	} 
 
 	maxSeatId := getMaxSeatId(seatIds)
-	fmt.Println("ans :>> ", maxSeatId)
+	mySeatId := getMySeatId(seatIds)
+
+	fmt.Println("ans 1 :>> ", maxSeatId)
+	fmt.Println("ans 2 :>> ", mySeatId)
 }
