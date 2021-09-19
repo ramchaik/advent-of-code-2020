@@ -1,6 +1,8 @@
-ownLength :: Num p => [a] -> p
-ownLength [] = 0
-ownLength (_ : xs) = 1 + ownLength xs
+len :: [a] -> Int
+len = len' 0
+  where
+    len' a [] = a
+    len' a (_ : xs) = len' (a + 1) xs
 
 getTreeCount :: (Show t, Num t) => [[Char]] -> Int -> Int -> Int -> Int -> Int -> t -> IO ()
 getTreeCount sample index size step down startIdx treeCount = do
@@ -10,14 +12,14 @@ getTreeCount sample index size step down startIdx treeCount = do
     else do
       if sample !! (index + down) !! (startIdx) == '#'
         then do
-          let updatedStartIdx = (index + step) `mod` ownLength (sample !! index)
+          let updatedStartIdx = (index + step) `mod` len (sample !! index)
           getTreeCount sample (index + down) size step down updatedStartIdx (treeCount + 1)
         else do
           getTreeCount sample (index + down) size step down startIdx treeCount
 
 getTotalTreesTraversedBySlope :: [[Char]] -> Int -> Int -> IO ()
 getTotalTreesTraversedBySlope sample step down = do
-  let size = ownLength sample
+  let size = len sample
   getTreeCount sample 0 size step down 0 0
 
 main :: IO ()
