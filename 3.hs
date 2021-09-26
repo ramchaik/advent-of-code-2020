@@ -1,8 +1,8 @@
-len :: [a] -> Int
-len = len' 0
+len :: Num t => [a] -> t
+len n = len' n 0 
   where
-    len' a [] = a
-    len' a (_ : xs) = len' (a + 1) xs
+    len' [] acc = acc
+    len' (_ : xs) acc = len' xs (acc + 1) 
 
 getTreeCount :: (Show t, Num t) => [[Char]] -> Int -> Int -> Int -> Int -> Int -> t -> IO ()
 getTreeCount sample index size step down startIdx treeCount = do
